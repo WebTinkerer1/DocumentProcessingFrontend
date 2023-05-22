@@ -1,0 +1,30 @@
+<p>Edit document revision</p>
+
+<div class="editor-list-container">
+
+
+  <div class="editor-container">
+    <p>Paragraph 1</p>
+    <ckeditor [editor]="Editor" [(ngModel)]="contentParagraph1"></ckeditor>
+  </div>
+
+  <div class="editor-container">
+    <p>Paragraph 2</p>
+    <ckeditor [editor]="Editor" [(ngModel)]="contentParagraph2"></ckeditor>
+  </div>
+
+  <div class="editor-container">
+    <p>Paragraph 3</p>
+    <ckeditor [editor]="Editor" [(ngModel)]="contentParagraph3"></ckeditor>
+  </div>
+
+  <div class="editor-container">
+    <p>Joined document</p>
+    <ckeditor [editor]="Editor" [data]="joinedDocumentText"></ckeditor>
+  </div>
+
+  <div class="button-container">
+    <button (click)="joinDocumentContent()">{{ buttonText }}</button>
+  </div>
+
+</div>
