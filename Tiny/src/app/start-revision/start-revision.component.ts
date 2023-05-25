@@ -70,4 +70,17 @@ export class StartRevisionComponent {
       console.log(`error = ${error}`);
     });
   }
+
+  onAcceptChanges($event: any) {
+    console.log(`onAcceptChanges, $event=${$event}`);
+
+    if($event === false) {
+      this.isUnderRevision = false;
+      return;
+    }
+
+// update document on server:
+
+
+  }
 }

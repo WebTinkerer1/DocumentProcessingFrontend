@@ -1,25 +1,14 @@
 <p>Edit document revision</p>
 
-<div class="editor-list-container">
-  <!-- <div class="editor-container">
-    <p>Paragraph 1</p>
-    <editor [(ngModel)]="contentParagraph1" apiKey="j5gh56tm1ba8py8mvnzgwbyruv81uf2e6agndqqvmw5z2wdt" [init]="{ plugins: 'lists link image table code help wordcount' }"></editor>
-  </div>
-  <div class="editor-container">
-    <p>Paragraph 2</p>
-    <editor [(ngModel)]="contentParagraph2" apiKey="j5gh56tm1ba8py8mvnzgwbyruv81uf2e6agndqqvmw5z2wdt" [init]="{ plugins: 'lists link image table code help wordcount' }"></editor>
-  </div>
-  <div class="editor-container">
-    <p>Paragraph 3</p>
-    <editor  [(ngModel)]="contentParagraph3" apiKey="j5gh56tm1ba8py8mvnzgwbyruv81uf2e6agndqqvmw5z2wdt" [init]="{ plugins: 'lists link image table code help wordcount' }"></editor>
-  </div>
+<div class="editor-list-container" *ngIf="chapters.length > 0">
 
-  <div class="editor-container">
-    <p>Joined document</p>
-    <editor [(ngModel)]="joinedDocumentText" apiKey="j5gh56tm1ba8py8mvnzgwbyruv81uf2e6agndqqvmw5z2wdt" [init]="{ plugins: 'lists link image table code help wordcount' }"></editor>
-  </div> -->
+  <div *ngFor="let chapter of chapters; let i = index" class="editor-container">
+    <p>Chapter {{i}}</p>
+    <editor [(ngModel)]="chapter.content" apiKey="j5gh56tm1ba8py8mvnzgwbyruv81uf2e6agndqqvmw5z2wdt" [init]="{ plugins: 'lists link image table code help wordcount' }"></editor>
+  </div>
 
   <div class="button-container">
-    <button (click)="joinDocumentContent()">{{ buttonText }}</button>
+    <button (click)="onAcceptChanges()">Accept changes</button>
+    <button (click)="onCancel()">Cancel</button>
   </div>
 </div>

@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Chapter } from '../model/response-model';
+import { DocumentRevisionService } from '../services/document-revision.service';
 
 @Component({
   selector: 'app-edit-revision',
@@ -8,30 +9,22 @@ import { Chapter } from '../model/response-model';
 })
 export class EditRevisionComponent implements OnInit {
 
-  public contentParagraph1: any = '<p>Paragraph 1</p>';
-  public contentParagraph2: any = '<p>Paragraph 2</p>';
-  public contentParagraph3: any = '<p>Paragraph 3</p>';
-
   public buttonText = 'Save changes';
 
   @Input() chapters: Array<Chapter> = new Array<Chapter>();
+  @Output() acceptChanges: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit(): void {
-
+    console.log(`EditRevisionComponent, in ngOnInit.`)
   }
 
-
-  public get joinedDocumentText(): string {
-    return this.contentParagraph1 + this.contentParagraph2 + this.contentParagraph3;
+  public onAcceptChanges() {
+    this.acceptChanges.emit(true);
   }
 
-  public set joinedDocumentText(newValue: string) {
-    console.log(newValue);
-  }
-
-  public joinDocumentContent() {
-    console.log(`joinedDocContent=${this.joinedDocumentText}`);
+  public onCancel() {
+    this.acceptChanges.emit(false);
   }
 }
