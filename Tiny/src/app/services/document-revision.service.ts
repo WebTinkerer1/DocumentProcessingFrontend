@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import { Chapter } from '../model/response-model';
+import { DocumentSplittingOptions } from '../model/enum';
 
 
 @Injectable({
@@ -14,8 +15,8 @@ export class DocumentRevisionService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public uploadDocument(formData: FormData, title: string, revision: number): Observable<any> {
-    return this.httpClient.post(this.serverUrl + `api/DocumentProcessing/upload/${title}/${revision}`, formData);
+  public uploadDocument(formData: FormData, title: string, revision: number, splittingOption: any): Observable<any> {
+    return this.httpClient.post(this.serverUrl + `api/DocumentProcessing/upload/${title}/${revision}/${splittingOption}`, formData);
   }
 
   public getChaptersForRevision(title: string, revision: number, chaptersToRevise: string): Observable<any> {

@@ -7,6 +7,12 @@ import { Pipe } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { DocumentRevisionService } from '../services/document-revision.service';
 import { Chapter } from '../model/response-model';
+import { DocumentSplittingOptions } from '../model/enum';
+
+interface DocumentSplittingOption {
+  value: string;
+  viewValue: string;
+}
 
 @Component({
   selector: 'app-start-revision',
@@ -23,6 +29,7 @@ export class StartRevisionComponent {
   public numberOfChapters: number = 0;
   public chaptersToRevise: any;
   public chapters: Array<Chapter> = new Array<Chapter>();
+  public selectedSplittingOption: DocumentSplittingOptions = DocumentSplittingOptions.Page;
 
   constructor(private documentRevisionService: DocumentRevisionService) { }
 
@@ -43,7 +50,9 @@ export class StartRevisionComponent {
 
       formData.append("files", file);
 
-      this.documentRevisionService.uploadDocument(formData, this.title, this.revision).subscribe(
+      console.log(`selectedSplittingOption=${this.selectedSplittingOption}`);
+
+      this.documentRevisionService.uploadDocument(formData, this.title, this.revision, this.selectedSplittingOption).subscribe(
         (result) => {
           this.fileUploaded = true;
           this.numberOfChapters = result.numberOfChapters;

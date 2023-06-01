@@ -5,6 +5,13 @@
     <input name="document-title" type="text" title="upload file" [(ngModel)]="title" />
     <label for="document-revision" title="document revision">document revision</label>
     <input name="document-revision" type="number" title="document revision" [(ngModel)]="revision" />
+    <mat-form-field>
+      <mat-label>Document splitting</mat-label>
+      <mat-select [(value)]="selectedSplittingOption">
+        <mat-option value="Page">Page</mat-option>
+        <mat-option value="Heading">Heading</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
 
   <input title="upload file" type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
