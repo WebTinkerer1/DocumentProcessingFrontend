@@ -88,8 +88,14 @@ export class StartRevisionComponent {
       return;
     }
 
-// update document on server:
-
-
+    // update document on server:
+    this.documentRevisionService.updateChapters(this.chapters).subscribe((result: any) => {
+      if (result) {
+        console.log(`document chapters updated successfully.`);
+        this.isUnderRevision = false;
+      }
+    }, (error: any) => {
+      console.log('error: ' + error);
+    });
   }
 }

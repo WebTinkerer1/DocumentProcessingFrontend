@@ -4,7 +4,7 @@
 
   <div *ngFor="let chapter of chapters; let i = index" class="editor-container">
     <p>Chapter {{i}}</p>
-    <editor [(ngModel)]="chapter.content" apiKey="j5gh56tm1ba8py8mvnzgwbyruv81uf2e6agndqqvmw5z2wdt" [init]="{ plugins: 'lists link image table code help wordcount' }"></editor>
+    <editor [(ngModel)]="chapter.content" apiKey="j5gh56tm1ba8py8mvnzgwbyruv81uf2e6agndqqvmw5z2wdt" [init]="{ plugins: 'lists link image table code help wordcount footnote' }"></editor>
   </div>
 
   <div class="button-container">
