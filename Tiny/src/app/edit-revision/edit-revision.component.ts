@@ -27,4 +27,8 @@ export class EditRevisionComponent implements OnInit {
   public onCancel() {
     this.acceptChanges.emit(false);
   }
+
+  public onCommandExecuted($event: any) {
+    console.log(`command executed: ${$event.event.command}`);
+  }
 }

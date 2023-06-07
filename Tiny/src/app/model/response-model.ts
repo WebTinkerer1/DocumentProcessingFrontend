@@ -11,3 +11,10 @@ export interface Chapter {
   documentId: number;
   document: Document;
 }
+
+export interface Footnote {
+  id: number;
+  content: string;
+  chapterId: number;
+  chapter: Chapter;
+}
