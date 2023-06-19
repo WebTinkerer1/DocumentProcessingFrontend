@@ -1,0 +1,22 @@
+<h2>document revision demo</h2>
+
+<div *ngIf="viewMode === viewModeEnum.Overview">
+  <ul class="documents">
+    <li *ngFor="let document of documents">
+      <!-- <a routerLink="/detail/{{document.id}}"> -->
+        <span class="badge">{{document.id}}</span> {{document.title}} <button (click)="onShowDetails( document.id )">Show details</button>
+      <!-- </a> -->
+    </li>
+  </ul>
+  <div>
+    <button mat-flat-button color="primary" class="add-btn" (click)="onCreateDocument()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</div>
+
+<app-document-create *ngIf="viewMode === viewModeEnum.CreateDocument"
+                     (fileUploadedEvent)="fileUploadFinished($event)" />
+<app-document-detail *ngIf="viewMode === viewModeEnum.DocumentDetails"
+                    [document]="selectedDocument"
+                    (revisionFinishedEvent)="revisionFinished($event)">

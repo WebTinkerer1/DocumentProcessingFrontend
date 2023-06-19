@@ -15,20 +15,20 @@
   </div>
 
   <input title="upload file" type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
-    <div class="file-upload">
-      {{ fileName || "Upload file to start revision!" }}
-      <button  mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
-        <mat-icon>attach_file</mat-icon>
-      </button>
+  <div class="file-upload">
+    {{ fileName || "Upload file to start revision!" }}
+    <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
+      <mat-icon>attach_file</mat-icon>
+    </button>
+  </div>
+  <div *ngIf="fileUploaded">
+    Document contains {{ numberOfChapters }} Chapters.
+    <div>
+      <label for="chapters-to-revise" title="Chapters to revise:">Chapters to revise:</label>
+      <input name="chapters-to-revise" title="comma separated list" type="text" [(ngModel)]="chaptersToRevise" />
+      <button (click)="startDocumentRevision()">start revision</button>
     </div>
-    <div *ngIf="fileUploaded">
-      Document contains {{ numberOfChapters }} Chapters.
-      <div>
-        <label for="chapters-to-revise" title="Chapters to revise:">Chapters to revise:</label>
-        <input name="chapters-to-revise" title="comma separated list" type="text" [(ngModel)]="chaptersToRevise" />
-        <button (click)="startDocumentRevision()">start revision</button>
-      </div>
-    </div>
+  </div>
 </div>
 <div *ngIf="isUnderRevision">
   <app-edit-revision [chapters]="chapters" (acceptChanges)="onAcceptChanges($event)"></app-edit-revision>

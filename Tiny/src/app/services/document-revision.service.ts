@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Chapter } from '../model/response-model';
+import { Observable, map, tap, of, catchError } from 'rxjs';
+import { Chapter, Document } from '../model/response-model';
 
 
 @Injectable({
@@ -23,5 +23,17 @@ export class DocumentRevisionService {
 
   public updateChapters(chapters: Chapter[]): Observable<any> {
     return this.httpClient.post(this.serverUrl + `api/DocumentProcessing/updateChapters`, chapters);
+  }
+
+  public updateFootnotes(chapterId: number, footnotes: string[]): Observable<any> {
+    return this.httpClient.post(this.serverUrl + `api/DocumentProcessing/updateFootnotes/${chapterId}`, footnotes);
+  }
+
+  public getAllDocuments(): Observable<any> {
+    return this.httpClient.get(this.serverUrl + `api/DocumentProcessing/documents`);
+  }
+
+  public getDocumentById(id: number): Observable<any> {
+    return this.httpClient.get(this.serverUrl + `api/DocumentProcessing/document/${id}`);
   }
 }

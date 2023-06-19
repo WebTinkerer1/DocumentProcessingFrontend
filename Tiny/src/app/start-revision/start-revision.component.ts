@@ -1,10 +1,4 @@
 import { Component } from '@angular/core';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Pipe } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
 import { DocumentRevisionService } from '../services/document-revision.service';
 import { Chapter } from '../model/response-model';
 import { DocumentSplittingOptions } from '../model/enum';
@@ -45,9 +39,7 @@ export class StartRevisionComponent {
     if (file) {
 
       this.fileName = file.name;
-
       const formData = new FormData();
-
       formData.append("files", file);
 
       console.log(`selectedSplittingOption=${this.selectedSplittingOption}`);

@@ -3,6 +3,7 @@ export interface Document {
   title: string;
   revision: number;
   rawContent: any;
+  chapters: Chapter[];
 }
 
 export interface Chapter {

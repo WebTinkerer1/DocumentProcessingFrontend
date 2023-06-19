@@ -13,12 +13,18 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { DocumentListComponent } from './document-list/document-list.component';
+import { DocumentDetailComponent } from './document-detail/document-detail.component';
+import { DocumentCreateComponent } from './document-create/document-create.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EditRevisionComponent,
     StartRevisionComponent,
+    DocumentListComponent,
+    DocumentDetailComponent,
+    DocumentCreateComponent,
   ],
   imports: [
     FormsModule,

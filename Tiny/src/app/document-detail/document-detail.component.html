@@ -1,0 +1,19 @@
+<div *ngIf="document">
+  <h2>{{ document.title }} Details</h2>
+  <div><span>id: </span>{{document.id}}</div>
+  <div>
+    Document title: {{document.title}}
+  </div>
+  <div>
+    Number of chapters: {{document.chapters.length}}
+  </div>
+  <div>
+    <label for="chapters-to-revise">chapters to revise:</label>
+    <input id="chapters-to-revise" [(ngModel)]="chaptersToRevise" />
+  </div>
+  <button type="button" (click)="goBack()">go back</button>
+  <button type="button" (click)="startDocumentRevision()">start revision</button>
+</div>
+<div *ngIf="isUnderRevision === true">
+  <app-edit-revision [chapters]="chapters" (acceptChanges)="onAcceptChanges($event)"></app-edit-revision>
+</div>

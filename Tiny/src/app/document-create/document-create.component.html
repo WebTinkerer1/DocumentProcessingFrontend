@@ -1,0 +1,22 @@
+<div class="upload-container">
+  <div>
+    <label for="document-title" title="document title">document title</label>
+    <input name="document-title" type="text" title="upload file" [(ngModel)]="title" />
+
+    <mat-form-field>
+      <mat-label>Document splitting</mat-label>
+      <mat-select [(value)]="selectedSplittingOption">
+        <mat-option value="Page">Page</mat-option>
+        <mat-option value="Heading">Heading</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <input title="upload file" type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+    <div class="file-upload">
+      {{ fileName || "Upload file to start revision!" }}
+      <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
+        <mat-icon>attach_file</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
