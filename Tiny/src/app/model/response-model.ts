@@ -3,6 +3,7 @@ export interface Document {
   title: string;
   revision: number;
   rawContent: any;
+  composedContent: string;
   chapters: Chapter[];
 }
 

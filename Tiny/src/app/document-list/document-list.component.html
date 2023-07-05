@@ -17,6 +17,7 @@
 
 <app-document-create *ngIf="viewMode === viewModeEnum.CreateDocument"
                      (fileUploadedEvent)="fileUploadFinished($event)" />
+
 <app-document-detail *ngIf="viewMode === viewModeEnum.DocumentDetails"
                     [document]="selectedDocument"
-                    (revisionFinishedEvent)="revisionFinished($event)">
+                    (closeDetailsEvent)="revisionFinished($event)">

@@ -1,8 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DocumentRevisionService } from '../services/document-revision.service';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { Document } from '../model/response-model'
+import { Chapter, Document, Footnote } from '../model/response-model'
 
 @Component({
   selector: 'app-document-detail',
@@ -14,11 +12,15 @@ export class DocumentDetailComponent implements OnInit {
   private _chaptersToRevise: any;
 
   @Input() document: Document | undefined;
-  chapters: any;
-  isUnderRevision = false;
+  @Output() closeDetailsEvent = new EventEmitter();
 
-  constructor(private documentProcessingService: DocumentRevisionService,
-              private location: Location ) { }
+  chapters: Array<Chapter> = new Array<Chapter>();
+  footnotes: Array<Footnote> = new Array<Footnote>();
+  isUnderRevision = false;
+  reviseEntireDocument = false;
+  documentUnderRevision: Document | undefined;
+
+  constructor(private documentProcessingService: DocumentRevisionService) { }
 
   ngOnInit(): void {
     if(this.document) {
@@ -30,7 +32,7 @@ export class DocumentDetailComponent implements OnInit {
   }
 
   goBack() {
-    this.location.back();
+    this.closeDetailsEvent.emit();
   }
 
   public set chaptersToRevise(theChapters: any) {
@@ -46,22 +48,41 @@ export class DocumentDetailComponent implements OnInit {
     console.log(`starting document revision ()...`);
     // Fetch list of chapters we intend to edit:
     if (this.document) {
-      this.documentProcessingService.getChaptersForRevision(this.document?.title, 1, this.chaptersToRevise).subscribe(chapters =>
-        {
-          this.chapters = chapters;
+
+      if(!this.reviseEntireDocument) {
+        this.documentProcessingService.getChaptersForRevision(this.document?.title, 1, this.chaptersToRevise).subscribe(chapters =>
+          {
+            this.chapters = chapters;
+            this.isUnderRevision = true;
+          });
+      } else {
+        this.documentProcessingService.getCompleteDocumentForRevision(this.document?.id).subscribe((doc: Document) => {
+          console.log(`document content: ${doc.composedContent}`);
+          this.documentUnderRevision = doc;
           this.isUnderRevision = true;
+        }, (error: any) => {
+          console.error(`error while composing complete document content, ${error}`);
         });
+      }
      }
   }
 
   onAcceptChanges($event: any) {
     console.log(`DocumentDetailComponent, onAcceptChanges, $event=${$event}`);
-    this.isUnderRevision = false;
     // update document on server:
     this.documentProcessingService.updateChapters(this.chapters).subscribe( result => {
       if (result) {
         console.log(`document chapters updated successfully.`);
-        this.isUnderRevision = false;
+        this.documentProcessingService.extractFootnotes(this.chapters).subscribe((extractedFootnotes: any) => {
+          if(result) {
+            console.log(`footnotes extracted: `);
+            this.footnotes = extractedFootnotes;
+            this.isUnderRevision = false;
+            this.footnotes.forEach((footnote, index, footnotes) => {
+              console.log(`${footnote.content}`);
+            });
+          }
+        });
       }
     });
   }

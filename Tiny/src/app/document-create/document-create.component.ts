@@ -50,4 +50,8 @@ export class DocumentCreateComponent {
     }
   }
 
+  goBack() {
+    this.fileUploadedEvent.emit(false);
+  }
+
 }

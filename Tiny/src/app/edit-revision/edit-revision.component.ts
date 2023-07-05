@@ -1,6 +1,9 @@
+import { ConfirmationDialogComponent } from './../confirmation-dialog/confirmation-dialog.component';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Chapter } from '../model/response-model';
 import { DocumentRevisionService } from '../services/document-revision.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-edit-revision',
@@ -16,56 +19,63 @@ export class EditRevisionComponent implements OnInit {
 
   private insertedFootnoteIds = new Map<any, any>();
 
-  constructor(private documentRevisionService : DocumentRevisionService) { }
+  @Input() documentContent: string | undefined;
+  @Input() reviseEntireDocument: boolean | undefined;
+
+  constructor(protected documentRevisionService: DocumentRevisionService,
+    protected dialog: MatDialog) { }
 
   ngOnInit(): void {
     console.log(`EditRevisionComponent, in ngOnInit.`)
   }
 
-  public onAcceptChanges() {
-
-    // log all inserted foot notes to console:
-
-    this.chapters.forEach(chapter => {
-
-      // fetch the footnote container for this chapter:
+  removeFootnoteById(id: any, editorContent: any) {
+    console.log(`removing footnote with id ${id} from DOM`);
+    var strId = id as string;
+    if(strId) {
+      var fnNumber = strId.split('_')[1];
+      var liElementIdentifier = `footnotes_entry_${fnNumber}`;
       const domParser = new DOMParser();
-      const htmlElement = domParser.parseFromString(chapter.content, 'text/html');
-      const footnotesDiv = htmlElement.querySelector('.mce-footnotes');
+      const htmlElement = domParser.parseFromString(editorContent, 'text/html');
+      const liElement = htmlElement?.querySelector('#' + liElementIdentifier);
 
-      console.log(`outer html = ${footnotesDiv?.outerHTML}`);
+      console.log(`li element to remove: ${liElement?.outerHTML}`);
+    }
+  }
 
+  openDialog(message: string, title: string, htmlElement: HTMLElement | null, editorContent: any) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        message: message,
+        title: title
+      }
+    });
 
-      const footnotesToUpdate : string[] = [];
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
 
-      // iterate over foot notes and check if foot note is in current chapter:
-      this.insertedFootnoteIds.forEach((value: any, key: any) => {
+      if (result) {
 
-        const footNoteId = key;
-        var footnoteNumber = footNoteId.split('_')[1];
-        console.log(`${footnoteNumber}`);
+        this.removeFootnoteById(htmlElement?.id, editorContent);
 
-        const selector = 'footnotes_entry_' + footnoteNumber;
-        const liElement = footnotesDiv?.querySelector('#' + selector);
-        const footnoteContent = liElement?.innerHTML;
-
-        if (footnoteContent) {
-          console.log(footnoteContent);
-          footnotesToUpdate.push(footnoteContent);
-        } else {
-          console.log(`footnote with number ` + footnoteNumber + ' was deleted after inserting.');
-        }
-
-      });
-
-      this.documentRevisionService.updateFootnotes(chapter.id, footnotesToUpdate).subscribe((result: any) => {
-
-      }, (error: any) => {
-
-      });
+        this.documentRevisionService.getCompleteDocumentForRevision(this.chapters[0].documentId).subscribe((result: any) => {
+          if (result) {
+            console.log(`complete document = ${result.composedContent}`);
+            this.documentContent = result.composedContent;
+            this.reviseEntireDocument = true;
+          }
+        }, (error: any) => {
+          console.error(`error while fetching complete document for revision, error = ${error}`);
+        });
+      }
 
     });
 
+  }
+
+  public onAcceptChanges() {
+    const numberOfObservers = this.acceptChanges.observers.length;
+    console.log(`acceptChanges has ${numberOfObservers} observers.`);
     this.acceptChanges.emit(true);
   }
 
@@ -74,20 +84,25 @@ export class EditRevisionComponent implements OnInit {
   }
 
   public onCommandExecuted($event: any) {
-    // if($event.event.command === 'mceInsertFootnote') {
     console.log(`command = ${$event.event.command}, value = ${$event.event.value}`);
-    if($event.event.command === 'mceInsertContent') {
+    if ($event.event.command === 'mceInsertContent') {
       let content = $event.event.value.content;
       console.log(`inserted content = ${content}`);
-      if(content.startsWith('<sup')) {
+
+      if (content.startsWith('<sup')) {
         const domParser = new DOMParser();
         const htmlElement = domParser.parseFromString(content, 'text/html');
         const supElement = htmlElement.querySelector('sup');
-
         this.insertedFootnoteIds.set(supElement?.id, supElement);
+
+        var editorContent = $event.editor.getContent();
+
+        console.log(`editor content: ${editorContent}`);
+
+        this.openDialog('Do you want to append the footnote anywhere else in the document?', 'Insertion of footnote detected', supElement, editorContent);
       }
+
     }
-    // }
   }
 
   public onChangeExcecuted($event: any) {

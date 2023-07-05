@@ -4,16 +4,22 @@
   <div>
     Document title: {{document.title}}
   </div>
-  <div>
+  <div *ngIf="document.chapters">
     Number of chapters: {{document.chapters.length}}
   </div>
   <div>
     <label for="chapters-to-revise">chapters to revise:</label>
-    <input id="chapters-to-revise" [(ngModel)]="chaptersToRevise" />
+    <input id="chapters-to-revise" [readOnly]="reviseEntireDocument" [(ngModel)]="chaptersToRevise" />
+    <label for="entire-document-checkbox">Entire document</label>
+    <input type="checkbox" id="entire-document-checkbox" [(ngModel)]="reviseEntireDocument" />
   </div>
   <button type="button" (click)="goBack()">go back</button>
   <button type="button" (click)="startDocumentRevision()">start revision</button>
 </div>
 <div *ngIf="isUnderRevision === true">
-  <app-edit-revision [chapters]="chapters" (acceptChanges)="onAcceptChanges($event)"></app-edit-revision>
+  <app-edit-revision
+  [chapters]="chapters"
+  [documentContent]="documentUnderRevision?.composedContent"
+  [reviseEntireDocument]="reviseEntireDocument"
+  (acceptChanges)="onAcceptChanges($event)"></app-edit-revision>
 </div>

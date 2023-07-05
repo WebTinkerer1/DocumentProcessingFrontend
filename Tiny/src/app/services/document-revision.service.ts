@@ -21,6 +21,10 @@ export class DocumentRevisionService {
     return this.httpClient.get(this.serverUrl + `api/DocumentProcessing/revise/${title}/${revision}/${chaptersToRevise}`);
   }
 
+  public getCompleteDocumentForRevision(id: number): Observable<any> {
+    return this.httpClient.get(this.serverUrl + `api/DocumentProcessing/revisedocument/${id}`);
+  }
+
   public updateChapters(chapters: Chapter[]): Observable<any> {
     return this.httpClient.post(this.serverUrl + `api/DocumentProcessing/updateChapters`, chapters);
   }
@@ -36,4 +40,9 @@ export class DocumentRevisionService {
   public getDocumentById(id: number): Observable<any> {
     return this.httpClient.get(this.serverUrl + `api/DocumentProcessing/document/${id}`);
   }
+
+  public extractFootnotes(chapters: Chapter[]): Observable<any> {
+    return this.httpClient.post(this.serverUrl + `api/DocumentProcessing/extractFootnotes`, chapters);
+  }
+
 }

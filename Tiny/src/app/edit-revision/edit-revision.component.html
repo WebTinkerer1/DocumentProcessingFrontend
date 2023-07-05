@@ -1,15 +1,24 @@
 <p>Edit document revision</p>
 
-<div class="editor-list-container" *ngIf="chapters.length > 0">
+<div class="editor-list-container">
 
-  <div *ngFor="let chapter of chapters; let i = index" class="editor-container">
-    <p>Chapter {{i}}</p>
-    <editor [(ngModel)]="chapter.content"
-            apiKey="4bqngadplvv6acbmsv7sziw36ckl5uuzodu5vbt59vtmmbx9"
-            (onExecCommand)="onCommandExecuted($event)"
-            (onChange)="onChangeExcecuted($event)"
-            [init]="{ plugins: 'lists link image table code help wordcount footnotes' }"
-            >
+  <div *ngIf="chapters && chapters.length > 0 && reviseEntireDocument === false">
+    <div *ngFor="let chapter of chapters; let i = index" class="editor-container">
+      <p>Chapter {{i}}</p>
+      <editor [(ngModel)]="chapter.content"
+              apiKey="j3ocx03ndti84qd4flgelfhh0pr5sor4sne46ssb37cba7v3"
+              (onExecCommand)="onCommandExecuted($event)"
+              (onChange)="onChangeExcecuted($event)"
+              [init]="{ plugins: 'lists advlist link image table code help wordcount footnotes anchor charmap', advlist_number_styles: 'lower-alpha', toolbar: 'numlist bullist anchor charmap', table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol' }">
+              >
+      </editor>
+    </div>
+  </div>
+  <div *ngIf="reviseEntireDocument === true">
+    <p>Document</p>
+    <editor [(ngModel)]="documentContent"
+            apiKey="j3ocx03ndti84qd4flgelfhh0pr5sor4sne46ssb37cba7v3"
+            [init]="{ plugins: 'lists advlist link image table code help wordcount footnotes anchor charmap', advlist_number_styles: 'lower-alpha', toolbar: 'numlist bullist anchor charmap', table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol' }">
     </editor>
   </div>
 

@@ -5,26 +5,29 @@ import { AppComponent } from './app.component';
 import { EditRevisionComponent } from './edit-revision/edit-revision.component';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { StartRevisionComponent } from './start-revision/start-revision.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon'
 import { HttpClientModule } from '@angular/common/http';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { DocumentListComponent } from './document-list/document-list.component';
 import { DocumentDetailComponent } from './document-detail/document-detail.component';
 import { DocumentCreateComponent } from './document-create/document-create.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     EditRevisionComponent,
-    StartRevisionComponent,
     DocumentListComponent,
     DocumentDetailComponent,
     DocumentCreateComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     FormsModule,
@@ -38,7 +41,9 @@ import { DocumentCreateComponent } from './document-create/document-create.compo
     HttpClientModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatDialogModule,
+    MatCardModule
     ],
   providers: [],
   bootstrap: [AppComponent]
